@@ -70,6 +70,12 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
 .pill.light .rate{color:#fcd34d}
 .pill.light .ico2{color:#fcd34d;filter:drop-shadow(0 0 7px #f59e0b)}
 .pill.light.off{opacity:.45;filter:grayscale(.6)}
+.pill.ever{display:none;border:2px solid #0ea5e9;background:linear-gradient(180deg,rgba(6,40,64,.96),rgba(2,10,18,.96));
+  box-shadow:0 0 20px rgba(56,189,248,.6), inset 0 0 24px rgba(14,165,233,.3);color:#bae6fd}
+.pill.ever.on{display:flex}
+.pill.ever .label{color:#dff5ff;text-shadow:0 0 10px rgba(125,211,252,.95)}
+.pill.ever .amount{color:#f0fbff;text-shadow:0 0 12px #38bdf8,0 0 26px #0ea5e9}
+.pill.ever .ico2{color:#7dd3fc;filter:drop-shadow(0 0 7px #38bdf8)}
 
 /* ================= SIDE PANEL ================= */
 #panel{position:fixed;left:18px;top:126px;bottom:18px;width:312px;z-index:20;border-radius:14px;padding:14px;
@@ -98,6 +104,10 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
 .stat.gold{background:linear-gradient(90deg,rgba(245,158,11,.14),rgba(245,158,11,.02));border-color:rgba(245,158,11,.2)}
 .stat.gold span{color:#e0a83a}
 .stat.gold b{color:#ffe9b0}
+.stat.ever{display:none;background:linear-gradient(90deg,rgba(56,189,248,.16),rgba(56,189,248,.02));border-color:rgba(56,189,248,.25)}
+.stat.ever.on{display:flex}
+.stat.ever span{color:#7dd3fc}
+.stat.ever b{color:#e0f7ff}
 
 .goal{font-size:10.5px;color:#a78bfa;letter-spacing:.06em}
 .goal .bar{height:6px;border-radius:4px;margin-top:5px;background:rgba(124,58,237,.16);overflow:hidden;border:1px solid rgba(168,85,247,.25)}
@@ -133,6 +143,12 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
 .link.lit.glow{stroke:rgba(216,180,254,.55);stroke-width:14}
 .link.gold.lit.core{stroke:#fff3d2;filter:drop-shadow(0 0 6px #fcd34d) drop-shadow(0 0 16px #f59e0b)}
 .link.gold.lit.glow{stroke:rgba(253,224,140,.5)}
+.link.ever.core{stroke:rgba(14,165,233,.55)}
+.link.ever.glow{stroke:rgba(56,189,248,.16)}
+.link.ever.near.core{stroke:rgba(125,211,252,.98);filter:drop-shadow(0 0 7px #38bdf8)}
+.link.ever.near.glow{stroke:rgba(56,189,248,.45)}
+.link.ever.lit.core{stroke:#ecfeff;filter:drop-shadow(0 0 6px #7dd3fc) drop-shadow(0 0 16px #0ea5e9)}
+.link.ever.lit.glow{stroke:rgba(125,211,252,.55)}
 
 /* --------- node --------- */
 .node{position:absolute;left:0;top:0;transform-origin:0 0;cursor:pointer}
@@ -166,6 +182,19 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
 .node.gold .desc{color:#fadf9d}
 .node.gold .foot{color:#fde68a}
 .node.gold .inner{background:linear-gradient(180deg,rgba(36,22,4,.96),rgba(14,8,2,.97))}
+
+.node.ever .frame{background:linear-gradient(180deg,#f2fdff,#7dd3fc 26%,#38bdf8 62%,#0369a1);
+  filter:drop-shadow(0 0 6px rgba(125,211,252,.95)) drop-shadow(0 0 20px rgba(14,165,233,.7))}
+.node.ever .inner{background:linear-gradient(180deg,rgba(5,24,38,.96),rgba(2,8,14,.97))}
+.node.ever .title{color:#e0f7ff;border-bottom-color:rgba(125,211,252,.55);text-shadow:0 0 9px rgba(56,189,248,.9)}
+.node.ever .desc{color:#a5e4f7}
+.node.ever .foot{color:#bae6fd}
+.node.ever .stem{background:linear-gradient(180deg,rgba(200,240,255,.45),rgba(200,240,255,.95));box-shadow:0 0 10px rgba(56,189,248,.9)}
+.node.ever .plaque{background:radial-gradient(ellipse at 50% 50%, rgba(125,211,252,.8), rgba(14,165,233,.32) 42%, rgba(56,189,248,.1) 62%, transparent 74%);
+  box-shadow:0 0 34px rgba(56,189,248,.6)}
+.node.ever.owned .frame{filter:drop-shadow(0 0 8px #e0f7ff) drop-shadow(0 0 26px rgba(14,165,233,.9))}
+.node .lv{position:absolute;right:13px;top:8px;font-size:8px;letter-spacing:.08em;color:#9d8fbd}
+.node.ever .lv{color:#7dd3fc}
 
 .node.locked{cursor:default;opacity:.74}
 .node.locked .frame{background:linear-gradient(180deg,#4a3a66,#2f2449 60%,#170f29);filter:drop-shadow(0 0 4px rgba(96,66,140,.4))}
@@ -311,6 +340,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
     <div class="stat"><span>VOID / СЕК</span><b id="sVoid">1</b></div>
     <div class="stat gold"><span>LIGHT / СЕК</span><b id="sLight">0</b></div>
     <div class="stat"><span>ВСЕГО VOID</span><b id="sTotal">0</b></div>
+    <div class="stat ever" id="statEver"><span>ВЕЧНОСТЬ</span><b id="sEver">0</b></div>
     <div class="stat"><span>УЗЛЫ</span><b id="sOwned">0/18</b></div>
     <div class="stat"><span>BIG BANG</span><b id="sColl">×1</b></div>
   </div>
@@ -349,6 +379,15 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
       <span class="label">Light:</span>
       <span class="amount" id="lightVal">0</span>
       <span class="rate" id="rateLight">+0/с</span>
+    </div>
+    <div class="pill ever" id="pillEver">
+      <span class="ico2">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+          <path d="M13.2 1.8L4 13.4h5.2L9.4 22 19 10.2h-5.4z"/>
+        </svg>
+      </span>
+      <span class="label">Everlasting:</span>
+      <span class="amount" id="everVal">0</span>
     </div>
   </div>
   <div class="tgroup">
@@ -418,19 +457,30 @@ const NODES = [
   /* 6 */
   {id:'L4', t:'ОРЕОЛ', gx:230, row:6, cost:250, cur:'light', gold:true, fx:{multV:2.2}, d:['×2.2 к пустоте'], req:['L3']},
   {id:'ab', t:'АБСОЛЮТ', gx:600, row:6, cost:2e8, fx:{multV:5}, d:['×5 к пустоте'], req:['sg']},
+  /* ВЕЧНОСТЬ — постоянная ветка (справа), видна после первого Big Bang */
+  {id:'e1', t:'ВЕЧНОСТЬ', gx:1240, row:1, cost:1, cur:'ever', ever:true, lvMax:5, costMul:2, fx:{multV:1.6}, d:['×1.6 к пустоте','за уровень']},
+  {id:'e2', t:'АВТО-ПУСТОТА', gx:1240, row:2, cost:2, cur:'ever', ever:true, lvMax:3, costMul:2.5, fx:{autoV:1}, d:['сама закупает','узлы пустоты'], req:['e1']},
+  {id:'e3', t:'СИЯНИЕ ВЕЧНОСТИ', gx:1240, row:3, cost:2, cur:'ever', ever:true, lvMax:5, costMul:2, fx:{multL:1.6}, d:['×1.6 к свету','за уровень'], req:['e2']},
+  {id:'e4', t:'АВТО-СВЕТ', gx:1240, row:4, cost:3, cur:'ever', ever:true, lvMax:3, costMul:2.5, fx:{autoL:1}, d:['сам закупает','узлы света'], req:['e3']},
+  {id:'e5', t:'ПРОСТОР', gx:1240, row:5, cost:5, cur:'ever', ever:true, lvMax:5, costMul:2.2, fx:{multV:2, multL:2}, d:['×2 ко всему','за уровень'], req:['e4']},
   /* 7 — престиж */
   {id:'bb', t:'BIG BANG', gx:600, row:7.6, cost:0, big:true, d:['СЖЕЧЬ ДЕРЕВО','×2 ко всему навсегда'], req:['ab','ts','L4']}
 ];
 const BYID = Object.fromEntries(NODES.map(n => [n.id, n]));
-const REAL = NODES.filter(n => !n.big);
+const REAL = NODES.filter(n => !n.big && !n.ever);
 
 /* ---------------- состояние ---------------- */
 const SAVE_KEY = 'voidtree.save.v3';
-const S = { void:0, light:0, total:0, owned:[], collapse:0, ts:0, born:Date.now() };
+const S = { void:0, light:0, ever:0, total:0, lv:{}, collapse:0, ts:0, born:Date.now() };
 let stats = { vps:1, lps:0, prestige:1 };
 let muted = false, dragMoved = false, lightSeen = false;
 
-const has = id => S.owned.indexOf(id) >= 0;
+const lvOf = id => S.lv[id] || 0;
+const maxLv = n => n.lvMax || 1;
+const has = id => lvOf(id) > 0;
+const maxed = n => lvOf(n.id) >= maxLv(n);
+const costOf = n => n.cost * Math.pow(n.costMul || 1.7, lvOf(n.id));
+const balOf = n => n.cur === 'light' ? S.light : (n.cur === 'ever' ? S.ever : S.void);
 const unlocked = n => (n.req || []).every(has);
 const prestigeMul = () => Math.pow(2, S.collapse);
 
@@ -460,11 +510,12 @@ function fmtTime(sec){
 function calc(){
   let addV = 0, multV = 1, addL = 0, multL = 1;
   for (const n of NODES){
-    if (!has(n.id) || !n.fx) continue;
-    if (n.fx.addV)  addV  += n.fx.addV;
-    if (n.fx.multV) multV *= n.fx.multV;
-    if (n.fx.addL)  addL  += n.fx.addL;
-    if (n.fx.multL) multL *= n.fx.multL;
+    const L = lvOf(n.id);
+    if (!L || !n.fx) continue;
+    if (n.fx.addV)  addV  += n.fx.addV * L;
+    if (n.fx.multV) multV *= Math.pow(n.fx.multV, L);
+    if (n.fx.addL)  addL  += n.fx.addL * L;
+    if (n.fx.multL) multL *= Math.pow(n.fx.multL, L);
   }
   const p = prestigeMul();
   return { vps: (1 + addV) * multV * p, lps: addL * multL * p, prestige: p };
@@ -579,9 +630,9 @@ function buildTree(){
     for (const rid of (n.req || [])){
       const d = linkPath(BYID[rid], n);
       const glow = document.createElementNS(SVGNS, 'path');
-      glow.setAttribute('d', d); glow.setAttribute('class', 'link glow' + (n.gold ? ' gold' : ''));
+      glow.setAttribute('d', d); glow.setAttribute('class', 'link glow' + (n.gold ? ' gold' : '') + (n.ever ? ' ever' : ''));
       const core = document.createElementNS(SVGNS, 'path');
-      core.setAttribute('d', d); core.setAttribute('class', 'link core' + (n.gold ? ' gold' : ''));
+      core.setAttribute('d', d); core.setAttribute('class', 'link core' + (n.gold ? ' gold' : '') + (n.ever ? ' ever' : ''));
       linksSvg.append(glow, core);
       (linkEls[n.id] = linkEls[n.id] || []).push(glow, core);
     }
@@ -589,7 +640,7 @@ function buildTree(){
   NODES.forEach((n, i) => {
     const p = nodePos(n);
     const el = document.createElement('div');
-    el.className = 'node locked' + (n.gold ? ' gold' : '') + (n.big ? ' big' : '');
+    el.className = 'node locked' + (n.gold ? ' gold' : '') + (n.big ? ' big' : '') + (n.ever ? ' ever' : '');
     el.style.transform = 'translate(' + p.x.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px) scale(' + p.s.toFixed(3) + ')';
     el.style.zIndex = String(100 - Math.round(n.row * 10));
     el.innerHTML =
@@ -598,6 +649,7 @@ function buildTree(){
       '<div class="stem"></div>' +
       '<div class="panel"><div class="frame"><div class="inner">' +
         '<div class="idx">' + (n.big ? '∞' : String(i+1).padStart(2,'0')) + '</div>' +
+        (maxLv(n) > 1 ? '<div class="lv"></div>' : '') +
         '<div class="title">' + n.t + '</div>' +
         '<div class="desc">' + n.d.join('<br>') + '</div>' +
         '<div class="foot"></div>' +
@@ -625,39 +677,42 @@ buildTree();
 
 /* ---------------- отрисовка состояния ---------------- */
 function updateNodes(){
+  const everOn = S.collapse > 0 || S.ever > 0;
   for (const n of NODES){
     const el = elById[n.id];
-    const own = has(n.id), unl = n.unlocked ? n.unlocked() : unlocked(n);
-    const cur = n.cur || 'void';
-    const price = cur === 'void' ? S.void : S.light;
+    const L = lvOf(n.id), MX = maxLv(n);
+    const own = L >= MX;                 /* полностью выкуплен */
+    const unl = unlocked(n);
+    const price = costOf(n);
+    el.style.display = (n.ever && !everOn) ? 'none' : '';
     el.classList.toggle('owned', own);
     el.classList.toggle('locked', !own && !unl);
     el.classList.toggle('ready', !own && unl);
-    el.classList.toggle('can', !own && unl && (n.big ? true : price >= n.cost));
-    el.querySelector('.foot').textContent = own
-      ? (n.big ? '∎' : 'КУПЛЕНО')
-      : (n.big ? 'ЗАЖЕЧЬ'
-        : (!unl ? 'ЗАКРЫТО'
-          : (cur === 'light' ? 'СВЕТ: ' : 'ЦЕНА: ') + fmt(n.cost)));
+    el.classList.toggle('can', !own && unl && (n.big ? true : balOf(n) >= price));
+    const lvEl = el.querySelector('.lv');
+    if (lvEl) lvEl.textContent = L + '/' + MX;
+    el.querySelector('.foot').textContent = n.big
+      ? (own ? '∎' : 'ЗАЖЕЧЬ')
+      : (!unl ? 'ЗАКРЫТО'
+        : (own ? (MX > 1 ? 'МАКС' : 'КУПЛЕНО')
+          : (n.cur === 'light' ? 'СВЕТ: ' : n.cur === 'ever' ? 'ВЕЧН: ' : 'ЦЕНА: ') + fmt(price)));
     for (const p of (linkEls[n.id] || [])){
+      p.style.display = (n.ever && !everOn) ? 'none' : '';
       p.classList.toggle('lit', own);
       p.classList.toggle('near', !own && unl);
     }
   }
-  const rest = NODES.filter(n => !n.big);
-  const bb = BYID.bb;
-  const el = elById.bb;
-  const unl = bb.unlocked();
-  el.classList.toggle('locked', !unl);
-  el.classList.toggle('ready', unl);
-  el.classList.toggle('can', unl);
+  const bb = BYID.bb, elb = elById.bb, unl = bb.unlocked();
+  elb.classList.toggle('locked', !unl);
+  elb.classList.toggle('ready', unl);
+  elb.classList.toggle('can', unl);
 }
-BYID.bb.unlocked = () => REAL.every(x => has(x.id));
+BYID.bb.unlocked = () => REAL.every(x => maxed(x));
 
 /* ---------------- HUD ---------------- */
-const elVoid = $('#voidVal'), elLight = $('#lightVal'),
+const elVoid = $('#voidVal'), elLight = $('#lightVal'), elEver = $('#everVal'),
       elRateV = $('#rateVoid'), elRateL = $('#rateLight'),
-      elSV = $('#sVoid'), elSL = $('#sLight'), elTotal = $('#sTotal'),
+      elSV = $('#sVoid'), elSL = $('#sLight'), elSE = $('#sEver'), elTotal = $('#sTotal'),
       elOwned = $('#sOwned'), elColl = $('#sColl'),
       elGoalTitle = $('#goalTitle'), elGoalFill = $('#goalFill');
 
@@ -666,23 +721,28 @@ function updateHUD(){
   const tv = fmt(S.void);
   if (elVoid.textContent !== tv) elVoid.textContent = tv;
   elLight.textContent = fmt(S.light);
+  elEver.textContent = fmt(S.ever);
   elRateV.textContent = '+' + fmt(stats.vps) + '/с';
   elRateL.textContent = '+' + fmt(stats.lps) + '/с';
   elSV.textContent = fmt(stats.vps);
   elSL.textContent = fmt(stats.lps);
+  elSE.textContent = fmt(S.ever);
   elTotal.textContent = fmt(S.total);
-  elOwned.textContent = S.owned.length + '/' + REAL.length;
+  elOwned.textContent = REAL.filter(x => has(x.id)).length + '/' + REAL.length;
   elColl.textContent = '×' + fmt(stats.prestige);
+  const everOn = S.collapse > 0 || S.ever > 0;
   $('#pillLight').classList.toggle('off', !lightSeen && S.light <= 0);
+  $('#pillEver').classList.toggle('on', everOn);
+  $('#statEver').classList.toggle('on', everOn);
 
-  const next = NODES.find(n => !has(n.id) && !n.big && (n.unlocked || unlocked)(n));
+  const next = NODES.find(n => !n.big && unlocked(n) && !maxed(n));
   if (next){
-    const cur = next.cur || 'void';
-    const bal = cur === 'void' ? S.void : S.light;
-    elGoalTitle.textContent = 'ЦЕЛЬ: ' + next.t + ' — ' + fmt(next.cost) + (cur === 'light' ? ' свет' : '');
-    elGoalFill.style.width = Math.min(100, bal / next.cost * 100).toFixed(1) + '%';
+    const price = costOf(next);
+    elGoalTitle.textContent = 'ЦЕЛЬ: ' + next.t + ' — ' + fmt(price) +
+      (next.cur === 'light' ? ' свет' : next.cur === 'ever' ? ' вечность' : '');
+    elGoalFill.style.width = Math.min(100, balOf(next) / price * 100).toFixed(1) + '%';
   } else {
-    elGoalTitle.textContent = 'ВСЁ ОТКРЫТО — ЛЕТИ К BIG BANG';
+    elGoalTitle.textContent = 'ВСЁ ОТКРЫТО — ЖМИ BIG BANG';
     elGoalFill.style.width = '100%';
   }
 }
@@ -725,52 +785,79 @@ function ambientTick(dt){
   }
 }
 
+/* ---------------- авто-покупатели (ветка Вечности) ---------------- */
+const autoAcc = { void: 0, light: 0 };
+function autoBuyTick(dt){
+  const pairs = [['void', 'e2'], ['light', 'e4']];
+  for (let i = 0; i < pairs.length; i++){
+    const cur = pairs[i][0], id = pairs[i][1];
+    const L = lvOf(id);
+    if (!L) continue;
+    autoAcc[cur] += dt;
+    const period = 3.6 - 1.0 * (L - 1);
+    if (autoAcc[cur] < period) continue;
+    autoAcc[cur] = 0;
+    const bal = cur === 'void' ? S.void : S.light;
+    const cands = NODES.filter(n => !n.big && !n.ever && (n.cur || 'void') === cur && unlocked(n) && !maxed(n) && costOf(n) <= bal);
+    if (!cands.length) continue;
+    cands.sort((a, b) => costOf(a) - costOf(b));
+    buy(cands[0].id, true);
+  }
+}
+
 /* ---------------- покупки ---------------- */
-function buy(id){
+function buy(id, silent){
   const n = BYID[id];
-  if (has(id)) return;
+  if (!n) return;
   if (n.big){
-    if (!BYID.bb.unlocked()){ toast('СНАЧАЛА ОТКРОЙ ВСЁ ДЕРЕВО', true); return; }
+    if (!BYID.bb.unlocked()){ if (!silent) toast('СНАЧАЛА ОТКРОЙ ВСЁ ДЕРЕВО', true); return; }
     doCollapse();
     return;
   }
-  if (!unlocked(n)) return;
+  if (!unlocked(n) || maxed(n)) return;
   const cur = n.cur || 'void';
-  if (S[cur] < n.cost){
-    elById[id].classList.add('shake');
-    setTimeout(() => elById[id].classList.remove('shake'), 320);
-    tone(120, .1, 'sawtooth', .03, 90);
+  const price = costOf(n);
+  if (S[cur] < price){
+    if (!silent){
+      elById[id].classList.add('shake');
+      setTimeout(() => elById[id].classList.remove('shake'), 320);
+      tone(120, .1, 'sawtooth', .03, 90);
+    }
     return;
   }
-  const before = NODES.filter(x => !x.big && unlocked(x)).map(x => x.id);
-  S[cur] -= n.cost;
-  S.owned.push(id);
+  const before = NODES.filter(x => unlocked(x) && !maxed(x)).map(x => x.id);
+  S[cur] -= price;
+  S.lv[id] = lvOf(id) + 1;
   stats = calc();
 
   const el = elById[id];
   el.classList.remove('owned'); void el.offsetWidth; el.classList.add('owned');
 
-  if (n.gold){ tone(740, .09, 'triangle', .05); setTimeout(() => tone(1100, .18, 'triangle', .045), 70); }
-  else { tone(620, .09, 'triangle', .05); setTimeout(() => tone(930, .16, 'triangle', .045), 70); }
-
-  const r = el.querySelector('.panel').getBoundingClientRect();
-  ripple(r.left + r.width/2, r.top + r.height/2);
-
-  const newly = NODES.filter(x => !x.big && unlocked(x) && before.indexOf(x.id) < 0);
-  for (const x of newly) toast('ОТКРЫТ УЗЕЛ: ' + x.t, x.gold);
-  if (id === 'L1' && !lightSeen){ lightSeen = true; toast('СВЕТ ОТКРЫТ — ВАЛЮТА LIGHT', true); }
+  if (!silent){
+    if (n.ever) { tone(880, .1, 'sine', .05); setTimeout(() => tone(1320, .2, 'sine', .045), 70); }
+    else if (n.gold){ tone(740, .09, 'triangle', .05); setTimeout(() => tone(1100, .18, 'triangle', .045), 70); }
+    else { tone(620, .09, 'triangle', .05); setTimeout(() => tone(930, .16, 'triangle', .045), 70); }
+    const r = el.querySelector('.panel').getBoundingClientRect();
+    ripple(r.left + r.width/2, r.top + r.height/2);
+    const newly = NODES.filter(x => unlocked(x) && before.indexOf(x.id) < 0);
+    for (const x of newly) toast('ОТКРЫТ УЗЕЛ: ' + x.t, x.gold || x.ever);
+    if (id === 'L1' && !lightSeen){ lightSeen = true; toast('СВЕТ ОТКРЫТ — ВАЛЮТА LIGHT ✦', true); }
+  }
 
   updateNodes(); updateHUD(); save();
 }
 
 function doCollapse(){
   if (!BYID.bb.unlocked()) return;
+  const earn = 1 + Math.floor(S.collapse / 2);
+  S.ever += earn;
   S.collapse++;
-  S.owned = []; S.void = 0; S.light = 0;
+  for (const k in S.lv) if (!BYID[k] || !BYID[k].ever) delete S.lv[k];
+  S.void = 0; S.light = 0;
   stats = calc();
   tone(220, .6, 'sine', .07, 1200);
   setTimeout(() => tone(1200, .5, 'sine', .05, 200), 220);
-  toast('BIG BANG ×' + fmt(stats.prestige) + ' — ВСЁ СГОРЕЛО', true);
+  toast('BIG BANG ×' + fmt(stats.prestige) + ' — +' + earn + ' ВЕЧНОСТИ', true);
   updateNodes(); updateHUD(); save();
 }
 
@@ -883,9 +970,12 @@ $('#btnHelp').addEventListener('click', () => openModal('КАК ИГРАТЬ',
   '<li>Золотой узел <b>ЛУЧ</b> открывает вторую валюту — <b>Light ✦</b>; остальные золотые узлы стоят свет и множат пустоту.</li>' +
   '<li>Узел покупается, когда куплен его родитель и хватает валюты.</li>' +
   '<li>В глубине платформы — <b>BIG BANG</b>: когда всё дерево открыто, он сжигает его и даёт <b>×2 навсегда</b>.</li>' +
+  '<li>За каждый Big Bang дают <b>Everlasting ⚡</b> (1, 1, 2, 2, 3...). Это третья, <b>синяя ветка</b> справа — она <b>не сгорает</b> и даёт уровни: × к доходу и <b>авто-покупатели</b> узлов.</li>' +
+  '<li>Узлы с бейджем уровня (напр. 2/5) можно покупать многократно — каждый уровень дороже.</li>' +
   '<li>Доход капает и с закрытой вкладкой (до 12 ч).</li>' +
   '</ul>' +
-  '<p>Панорама — тянуть мышью. Зум — колесо. Двойной клик — вернуть вид.</p>'));
+  '<p>Панорама — тянуть мышью. Зум — колесо. Двойной клик — вернуть вид.<br>' +
+  'Снизу: <b>BIG BANG</b> — престиж, <b>АВТО-СБРОС</b> — сам жмёт престиж, когда дерево собрано.</p>'));
 
 $('#btnMenu').addEventListener('click', () => {
   const played = fmtTime((Date.now() - S.born) / 1000);
@@ -894,7 +984,8 @@ $('#btnMenu').addEventListener('click', () => {
     '<div class="row"><span>Light в секунду</span><b>' + fmt(stats.lps) + '</b></div>' +
     '<div class="row"><span>Всего Void</span><b>' + fmt(S.total) + '</b></div>' +
     '<div class="row"><span>Big Bang</span><b>' + S.collapse + ' (×' + fmt(stats.prestige) + ')</b></div>' +
-    '<div class="row"><span>Узлов</span><b>' + S.owned.length + '/' + REAL.length + '</b></div>' +
+    '<div class="row"><span>Вечность</span><b>' + fmt(S.ever) + '</b></div>' +
+    '<div class="row"><span>Узлов</span><b>' + REAL.filter(x => has(x.id)).length + '/' + REAL.length + '</b></div>' +
     '<div class="row"><span>В игре</span><b>' + played + '</b></div>' +
     '<button class="btn" id="mSave">СОХРАНИТЬ СЕЙВ</button>' +
     '<button class="btn danger" id="mReset">СБРОСИТЬ ПРОГРЕСС</button>');
@@ -918,8 +1009,8 @@ let saveAcc = 0;
 function save(){
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify({
-      v: 3, void: S.void, light: S.light, total: S.total, owned: S.owned,
-      collapse: S.collapse, ts: Date.now(), born: S.born, lightSeen: lightSeen
+      v: 4, void: S.void, light: S.light, ever: S.ever, total: S.total, lv: S.lv,
+      collapse: S.collapse, ts: Date.now(), born: S.born, lightSeen: lightSeen, autoReset: autoReset
     }));
   } catch(e){}
 }
@@ -929,11 +1020,18 @@ function load(){
     if (!d) return;
     S.void = +d.void || 0;
     S.light = +d.light || 0;
+    S.ever = +d.ever || 0;
     S.total = +d.total || 0;
-    S.owned = Array.isArray(d.owned) ? d.owned.filter(id => BYID[id]) : [];
     S.collapse = +d.collapse || 0;
     S.born = +d.born || Date.now();
     lightSeen = !!d.lightSeen;
+    autoReset = !!d.autoReset;
+    S.lv = {};
+    if (d.lv && typeof d.lv === 'object'){
+      for (const k in d.lv) if (BYID[k]) S.lv[k] = Math.max(0, Math.min(maxLv(BYID[k]), +d.lv[k] || 0));
+    } else if (Array.isArray(d.owned)){            /* миграция со v3 */
+      d.owned.filter(id => BYID[id]).forEach(id => { S.lv[id] = 1; });
+    }
     if (d.ts){
       const away = Math.min(12*3600, Math.max(0, (Date.now() - d.ts) / 1000));
       const st = calc();
@@ -957,6 +1055,7 @@ function frame(now){
   S.light += stats.lps * dt;
 
   ambientTick(dt);
+  autoBuyTick(dt);
 
   if (now - lastHud > 90){ lastHud = now; updateHUD(); }
   if (now - lastPop > 800){
@@ -986,6 +1085,7 @@ load();
 stats = calc();
 updateNodes();
 updateHUD();
+elAuto.classList.toggle('on', autoReset);
 applyCam();
 requestAnimationFrame(frame);
 window.addEventListener('beforeunload', save);
