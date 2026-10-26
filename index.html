@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>VOID TREE — дерево пустоты</title>
+<title>VOID TREE v0.5.1 — дерево пустоты</title>
 <style>
 :root{
   --violet:#a855f7;
@@ -113,12 +113,13 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
 .goal .bar{height:6px;border-radius:4px;margin-top:5px;background:rgba(124,58,237,.16);overflow:hidden;border:1px solid rgba(168,85,247,.25)}
 .goal .fill{height:100%;width:0%;background:linear-gradient(90deg,#7c3aed,#d8b4fe);box-shadow:0 0 10px #a855f7;transition:width .25s}
 .hint{font-size:10px;line-height:1.55;color:#6f6190;text-align:center;letter-spacing:.03em;margin-top:auto}
+.ver{font-size:9px;letter-spacing:.2em;color:#5c4f7a;text-align:center;padding-bottom:2px}
 
 /* ================= STAGE / DIORAMA ================= */
 #stage{position:fixed;inset:0;z-index:10;overflow:hidden;touch-action:none;cursor:grab}
 #stage.dragging{cursor:grabbing}
-#diorama{position:absolute;left:0;top:0;width:1600px;height:1100px;transform-origin:0 0;will-change:transform}
-#floor{position:absolute;left:-200px;top:250px;width:2000px;height:900px;
+#diorama{position:absolute;left:0;top:0;width:1800px;height:1100px;transform-origin:0 0;will-change:transform}
+#floor{position:absolute;left:-400px;top:250px;width:2600px;height:900px;
   background:
     radial-gradient(ellipse 52% 42% at 50% 46%, rgba(124,58,237,.28), rgba(90,40,180,.07) 55%, transparent 78%),
     radial-gradient(ellipse 26% 18% at 50% 20%, rgba(168,85,247,.20), transparent 70%);
@@ -193,8 +194,9 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
 .node.ever .plaque{background:radial-gradient(ellipse at 50% 50%, rgba(125,211,252,.8), rgba(14,165,233,.32) 42%, rgba(56,189,248,.1) 62%, transparent 74%);
   box-shadow:0 0 34px rgba(56,189,248,.6)}
 .node.ever.owned .frame{filter:drop-shadow(0 0 8px #e0f7ff) drop-shadow(0 0 26px rgba(14,165,233,.9))}
-.node .lv{position:absolute;right:13px;top:8px;font-size:8px;letter-spacing:.08em;color:#9d8fbd}
-.node.ever .lv{color:#7dd3fc}
+.node .lv{position:absolute;right:9px;top:7px;font-size:9px;letter-spacing:.06em;color:#cbb8ff;
+  background:rgba(124,58,237,.3);border:1px solid rgba(168,85,247,.5);border-radius:4px;padding:1px 4px}
+.node.ever .lv{color:#bfeaff;background:rgba(14,165,233,.28);border-color:rgba(56,189,248,.55)}
 
 .node.locked{cursor:default;opacity:.74}
 .node.locked .frame{background:linear-gradient(180deg,#4a3a66,#2f2449 60%,#170f29);filter:drop-shadow(0 0 4px rgba(96,66,140,.4))}
@@ -249,6 +251,36 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
   border:2px solid rgba(216,180,254,.9);box-shadow:0 0 22px #a855f7;animation:rip .6s ease-out forwards}
 @keyframes rip{to{transform:scale(5);opacity:0}}
 
+/* ---- искры, вспышки, тряска (как в ролике) ---- */
+.spark{position:absolute;pointer-events:none;--r:0deg;transform:rotate(var(--r));
+  filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 28px rgba(192,132,252,.95));
+  animation:sparkpop .95s cubic-bezier(.15,.85,.25,1) forwards}
+.spark svg{width:100%;height:100%;display:block}
+@keyframes sparkpop{
+  0%{opacity:0;transform:rotate(var(--r)) scale(.12)}
+  16%{opacity:1;transform:rotate(var(--r)) scale(1.12)}
+  52%{opacity:.95;transform:rotate(var(--r)) scale(.92)}
+  100%{opacity:0;transform:rotate(var(--r)) scale(.45)}
+}
+.spark.gold{filter:drop-shadow(0 0 10px #fff8e1) drop-shadow(0 0 28px rgba(251,191,36,.95))}
+.spark.ever{filter:drop-shadow(0 0 10px #ecfeff) drop-shadow(0 0 28px rgba(56,189,248,.95))}
+.flash{position:fixed;inset:0;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(circle at 50% 46%, rgba(255,255,255,.95), rgba(200,150,255,.5) 32%, transparent 66%);
+  animation:flashfade .85s ease-out forwards}
+@keyframes flashfade{0%{opacity:0}10%{opacity:1}100%{opacity:0}}
+#stage.shake{animation:shakeScreen .62s ease-out}
+@keyframes shakeScreen{
+  0%,100%{transform:translate(0,0)}
+  10%{transform:translate(-7px,3px)}
+  25%{transform:translate(8px,-4px)}
+  40%{transform:translate(-5px,-3px)}
+  55%{transform:translate(5px,4px)}
+  70%{transform:translate(-3px,2px)}
+  85%{transform:translate(2px,-1px)}
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3.5px)}}
+.node .inner{animation:bob 7s ease-in-out infinite;animation-delay:var(--d,0s)}
+
 #toasts{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);z-index:45;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
 .toast{padding:9px 18px;border-radius:8px;font-size:11.5px;letter-spacing:.12em;color:#f5e9ff;
   background:rgba(18,7,32,.94);border:1px solid rgba(168,85,247,.6);box-shadow:0 0 22px rgba(168,85,247,.55);
@@ -260,7 +292,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
 #logo{display:none}
 
 /* --------- action bar --------- */
-#actionbar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:26;display:flex;gap:22px;align-items:flex-start}
+#actionbar{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);z-index:26;display:flex;gap:22px;align-items:flex-start}
 .abtn{position:relative;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
   border:2px solid rgba(168,85,247,.8);background:radial-gradient(circle at 50% 38%,rgba(58,24,108,.96),rgba(8,3,16,.96));
   color:#e9d5ff;font-family:var(--font);font-size:19px;line-height:1;
@@ -320,7 +352,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
   <div id="diorama">
     <div id="floor"></div>
     <div id="platform"></div>
-    <svg id="links" width="1600" height="1100" viewBox="0 0 1600 1100"></svg>
+    <svg id="links" width="1800" height="1100" viewBox="0 0 1800 1100"></svg>
     <div id="nodes"></div>
   </div>
 </div>
@@ -351,6 +383,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
   </div>
 
   <div class="hint">Дерево лежит на платформе.<br>Тяни мышью — смотри, колесо — зум<br>двойной клик — сброс вида</div>
+  <div class="ver">ВЕРСИЯ <span id="verPanel">0.5.1</span> <span id="verMode"></span></div>
 </div>
 
 <div id="topbar">
@@ -429,63 +462,81 @@ html,body{margin:0;height:100%;overflow:hidden;background:#030208;color:#efe1ff;
    ============================================================ */
 const $ = s => document.querySelector(s);
 
+/* ---------------- версия ---------------- */
+const VERSION = '0.5.1';
+const BUILD = '2026-10-26';
+document.title = 'VOID TREE v' + VERSION + ' — дерево пустоты';
+
 /* ---------------- дерево ---------------- */
 /* gx — колонка в мировых координатах (600 = центр), row — глубина (0 = ближе к камере) */
 const NODES = [
-  /* 0 */
-  {id:'aw', t:'ПРОБУЖДЕНИЕ', gx:600, row:0, cost:15, fx:{addV:2}, d:['+2 пустоты / сек']},
+  /* 0 — старт */
+  {id:'aw', t:'ПРОБУЖДЕНИЕ', gx:540, row:0, cost:25, costMul:2.2, lvMax:10, fx:{addV:4}, d:['+4 пустоты / сек','за уровень']},
   /* 1 */
-  {id:'cm', t:'ХОЛОДНЫЙ РАЗУМ', gx:230, row:1, cost:180, fx:{multV:1.6}, d:['×1.6 к пустоте'], req:['aw']},
-  {id:'rs', t:'РЕЗОНАНС', gx:600, row:1, cost:60, fx:{addV:4}, d:['+4 пустоты / сек'], req:['aw']},
-  {id:'rr', t:'РВАНЫЙ РИТМ', gx:970, row:1, cost:350, fx:{multV:1.6}, d:['×1.6 к пустоте'], req:['aw']},
+  {id:'cm', t:'ХОЛОДНЫЙ РАЗУМ', gx:240, row:1, cost:260, costMul:2.4, lvMax:15, fx:{multV:2}, d:['×2 к пустоте'], req:['aw']},
+  {id:'rs', t:'РЕЗОНАНС', gx:540, row:1, cost:120, costMul:2.6, lvMax:12, fx:{addV:15}, d:['+15 пустоты / сек'], req:['aw']},
+  {id:'rr', t:'РВАНЫЙ РИТМ', gx:840, row:1, cost:420, costMul:2.4, lvMax:15, fx:{multV:2}, d:['×2 к пустоте'], req:['aw']},
+  {id:'p1', t:'ПУЛЬС', gx:1140, row:1, cost:900, costMul:2.5, lvMax:12, fx:{multV:2.2}, d:['×2.2 к пустоте'], req:['aw']},
   /* 2 */
-  {id:'rz', t:'РЕЗОНАТОР', gx:230, row:2, cost:2500, fx:{multV:1.8}, d:['×1.8 к пустоте'], req:['cm']},
-  {id:'gb', t:'ГУЛ БЕЗДНЫ', gx:600, row:2, cost:900, fx:{multV:2}, d:['×2 к пустоте'], req:['rs']},
-  {id:'us', t:'УСКОРЕНИЕ', gx:970, row:2, cost:6000, fx:{multV:1.8}, d:['×1.8 к пустоте'], req:['rr']},
+  {id:'rz', t:'РЕЗОНАТОР', gx:240, row:2, cost:5000, costMul:3, lvMax:15, fx:{multV:3}, d:['×3 к пустоте'], req:['cm']},
+  {id:'gb', t:'ГУЛ БЕЗДНЫ', gx:540, row:2, cost:1400, costMul:3, lvMax:15, fx:{multV:3}, d:['×3 к пустоте'], req:['rs']},
+  {id:'us', t:'УСКОРЕНИЕ', gx:840, row:2, cost:9000, costMul:3, lvMax:15, fx:{multV:3}, d:['×3 к пустоте'], req:['rr']},
+  {id:'p2', t:'ЭХО', gx:1140, row:2, cost:14000, costMul:3, lvMax:12, fx:{multV:2.6}, d:['×2.6 к пустоте'], req:['p1']},
   /* 3 */
-  {id:'L1', t:'ЛУЧ', gx:230, row:3, cost:2000, cur:'void', gold:true, fx:{addL:.5}, d:['+0.5 света / сек'], req:['rz']},
-  {id:'rl', t:'РАЗЛОМ', gx:600, row:3, cost:18000, fx:{multV:2}, d:['×2 к пустоте'], req:['gb']},
-  {id:'pg', t:'ПЕРЕГРЕВ', gx:970, row:3, cost:150000, fx:{multV:2.2}, d:['×2.2 к пустоте'], req:['us']},
+  {id:'L1', t:'ЛУЧ', gx:240, row:3, cost:3000, cur:'void', gold:true, lvMax:1, fx:{addL:2}, d:['+2 света / сек'], req:['rz']},
+  {id:'rl', t:'РАЗЛОМ', gx:540, row:3, cost:40000, costMul:3.4, lvMax:18, fx:{multV:5}, d:['×5 к пустоте'], req:['gb']},
+  {id:'pg', t:'ПЕРЕГРЕВ', gx:840, row:3, cost:120000, costMul:3.4, lvMax:18, fx:{multV:5}, d:['×5 к пустоте'], req:['us']},
+  {id:'p3', t:'ПРОБОЙ', gx:1140, row:3, cost:90000, costMul:3.2, lvMax:15, fx:{multV:4}, d:['×4 к пустоте'], req:['p2']},
   /* 4 */
-  {id:'L2', t:'СВЕТОЧ', gx:230, row:4, cost:6, cur:'light', gold:true, fx:{multV:1.7}, d:['×1.7 к пустоте'], req:['L1']},
-  {id:'it', t:'ИТЕРАЦИЯ', gx:600, row:4, cost:400000, fx:{multV:2.5}, d:['×2.5 к пустоте'], req:['rl']},
-  {id:'ks', t:'КАСКАД', gx:970, row:4, cost:3e6, fx:{multV:3}, d:['×3 к пустоте'], req:['pg']},
+  {id:'L2', t:'СВЕТОЧ', gx:240, row:4, cost:8, cur:'light', gold:true, costMul:2.4, lvMax:12, fx:{multV:4}, d:['×4 к пустоте'], req:['L1']},
+  {id:'it', t:'ИТЕРАЦИЯ', gx:540, row:4, cost:2e6, costMul:3.8, lvMax:18, fx:{multV:8}, d:['×8 к пустоте'], req:['rl']},
+  {id:'ks', t:'КАСКАД', gx:840, row:4, cost:8e6, costMul:3.8, lvMax:18, fx:{multV:8}, d:['×8 к пустоте'], req:['pg']},
+  {id:'p4', t:'ВОРОНКА', gx:1140, row:4, cost:3e6, costMul:3.6, lvMax:15, fx:{multV:6}, d:['×6 к пустоте'], req:['p3']},
   /* 5 */
-  {id:'L3', t:'СИЯНИЕ', gx:230, row:5, cost:40, cur:'light', gold:true, fx:{multL:2.5}, d:['×2.5 к свету'], req:['L2']},
-  {id:'sg', t:'СИНГУЛЯРНОСТЬ', gx:600, row:5, cost:1e7, fx:{multV:3}, d:['×3 к пустоте'], req:['it']},
-  {id:'ts', t:'ТИШИНА', gx:970, row:5, cost:4e7, fx:{multV:3}, d:['×3 к пустоте'], req:['ks']},
+  {id:'L3', t:'СИЯНИЕ', gx:240, row:5, cost:60, cur:'light', gold:true, costMul:2.6, lvMax:12, fx:{multL:3}, d:['×3 к свету'], req:['L2']},
+  {id:'sg', t:'СИНГУЛЯРНОСТЬ', gx:540, row:5, cost:3e8, costMul:4, lvMax:20, fx:{multV:15}, d:['×15 к пустоте'], req:['it']},
+  {id:'ts', t:'ТИШИНА', gx:840, row:5, cost:1e9, costMul:4, lvMax:20, fx:{multV:15}, d:['×15 к пустоте'], req:['ks']},
+  {id:'p5', t:'РАЗРЫВ', gx:1140, row:5, cost:2e8, costMul:3.8, lvMax:18, fx:{multV:12}, d:['×12 к пустоте'], req:['p4']},
   /* 6 */
-  {id:'L4', t:'ОРЕОЛ', gx:230, row:6, cost:250, cur:'light', gold:true, fx:{multV:2.2}, d:['×2.2 к пустоте'], req:['L3']},
-  {id:'ab', t:'АБСОЛЮТ', gx:600, row:6, cost:2e8, fx:{multV:5}, d:['×5 к пустоте'], req:['sg']},
+  {id:'L4', t:'ОРЕОЛ', gx:240, row:6, cost:400, cur:'light', gold:true, costMul:2.8, lvMax:12, fx:{multV:10}, d:['×10 к пустоте'], req:['L3']},
+  {id:'ab', t:'АБСОЛЮТ', gx:540, row:6, cost:2e10, costMul:4.2, lvMax:20, fx:{multV:60}, d:['×60 к пустоте'], req:['sg']},
+  {id:'nt', t:'НИЧТО', gx:840, row:6, cost:1e10, costMul:4.2, lvMax:17, fx:{multV:40}, d:['×40 к пустоте'], req:['ts']},
+  {id:'p6', t:'МЁРТВАЯ ЗВЕЗДА', gx:1140, row:6, cost:8e9, costMul:4, lvMax:18, fx:{multV:30}, d:['×30 к пустоте'], req:['p5']},
   /* ВЕЧНОСТЬ — постоянная ветка (справа), видна после первого Big Bang */
-  {id:'e1', t:'ВЕЧНОСТЬ', gx:1240, row:1, cost:1, cur:'ever', ever:true, lvMax:5, costMul:2, fx:{multV:1.6}, d:['×1.6 к пустоте','за уровень']},
-  {id:'e2', t:'АВТО-ПУСТОТА', gx:1240, row:2, cost:2, cur:'ever', ever:true, lvMax:3, costMul:2.5, fx:{autoV:1}, d:['сама закупает','узлы пустоты'], req:['e1']},
-  {id:'e3', t:'СИЯНИЕ ВЕЧНОСТИ', gx:1240, row:3, cost:2, cur:'ever', ever:true, lvMax:5, costMul:2, fx:{multL:1.6}, d:['×1.6 к свету','за уровень'], req:['e2']},
-  {id:'e4', t:'АВТО-СВЕТ', gx:1240, row:4, cost:3, cur:'ever', ever:true, lvMax:3, costMul:2.5, fx:{autoL:1}, d:['сам закупает','узлы света'], req:['e3']},
-  {id:'e5', t:'ПРОСТОР', gx:1240, row:5, cost:5, cur:'ever', ever:true, lvMax:5, costMul:2.2, fx:{multV:2, multL:2}, d:['×2 ко всему','за уровень'], req:['e4']},
+  {id:'e1', t:'ВЕЧНОСТЬ', gx:1440, row:1, cost:1, cur:'ever', ever:true, lvMax:15, costMul:2, fx:{multV:3}, d:['×3 к пустоте','за уровень']},
+  {id:'e2', t:'АВТО-ПУСТОТА', gx:1440, row:2, cost:2, cur:'ever', ever:true, lvMax:3, costMul:2.5, fx:{autoV:1}, d:['сама закупает','узлы пустоты'], req:['e1']},
+  {id:'e3', t:'СИЯНИЕ ВЕЧНОСТИ', gx:1440, row:3, cost:2, cur:'ever', ever:true, lvMax:12, costMul:2, fx:{multL:2.5}, d:['×2.5 к свету','за уровень'], req:['e2']},
+  {id:'e4', t:'АВТО-СВЕТ', gx:1440, row:4, cost:3, cur:'ever', ever:true, lvMax:3, costMul:2.5, fx:{autoL:1}, d:['сам закупает','узлы света'], req:['e3']},
+  {id:'e5', t:'ПРОСТОР', gx:1440, row:5, cost:5, cur:'ever', ever:true, lvMax:15, costMul:2.2, fx:{multV:4, multL:4}, d:['×4 ко всему','за уровень'], req:['e4']},
   /* 7 — престиж */
-  {id:'bb', t:'BIG BANG', gx:600, row:7.6, cost:0, big:true, d:['СЖЕЧЬ ДЕРЕВО','×2 ко всему навсегда'], req:['ab','ts','L4']}
+  {id:'bb', t:'BIG BANG', gx:540, row:7.6, cost:0, big:true, d:['СЖЕЧЬ ДЕРЕВО','×2 ко всему навсегда'], req:['ab','nt','p6','ts','L4']}
 ];
 const BYID = Object.fromEntries(NODES.map(n => [n.id, n]));
 const REAL = NODES.filter(n => !n.big && !n.ever);
 
 /* ---------------- состояние ---------------- */
-const SAVE_KEY = 'voidtree.save.v3';
+const SAVE_KEY = 'voidtree.save.v4';
+const SAVE_KEY_OLD = 'voidtree.save.v3';
 const S = { void:0, light:0, ever:0, total:0, lv:{}, collapse:0, ts:0, born:Date.now() };
 let stats = { vps:1, lps:0, prestige:1 };
-let muted = false, dragMoved = false, lightSeen = false;
+let muted = false, dragMoved = false, lightSeen = false, buyMax = false;
 
 const lvOf = id => S.lv[id] || 0;
 const maxLv = n => n.lvMax || 1;
 const has = id => lvOf(id) > 0;
 const maxed = n => lvOf(n.id) >= maxLv(n);
-const costOf = n => n.cost * Math.pow(n.costMul || 1.7, lvOf(n.id));
+const costAt = (n, lv) => n.cost * Math.pow(n.costMul || 1, lv);
+const costOf = n => costAt(n, lvOf(n.id));
 const balOf = n => n.cur === 'light' ? S.light : (n.cur === 'ever' ? S.ever : S.void);
 const unlocked = n => (n.req || []).every(has);
-const prestigeMul = () => Math.pow(2, S.collapse);
+const prestigeMul = () => {
+  const p = Math.pow(2, S.collapse);
+  return Number.isFinite(p) ? p : Number.MAX_VALUE;
+};
+const CORE_V = 5;                 /* базовый доход ядра, пустоты/сек */
 
 /* ---------------- формат чисел ---------------- */
-const UNITS = ['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc','Ud','Dd'];
+const UNITS = ['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc','Ud','Dd','Td','Qad','Qid','Sxd','Spd','Ocd','Nod','Vg'];
 function fmt(n){
   if (!isFinite(n)) return '∞';
   if (n < 0) return '-' + fmt(-n);
@@ -493,6 +544,10 @@ function fmt(n){
     if (n === 0) return '0';
     if (n < 10) return n.toFixed(2).replace(/\.?0+$/,'');
     return Math.floor(n).toString();
+  }
+  if (n >= 1e63){                       /* дальше — научная запись: 1.23e120 */
+    const e = Math.floor(Math.log10(n));
+    return (n / Math.pow(10, e)).toFixed(2) + 'e' + e;
   }
   let i = 0;
   while (n >= 1000 && i < UNITS.length - 1){ n /= 1000; i++; }
@@ -518,7 +573,11 @@ function calc(){
     if (n.fx.multL) multL *= Math.pow(n.fx.multL, L);
   }
   const p = prestigeMul();
-  return { vps: (1 + addV) * multV * p, lps: addL * multL * p, prestige: p };
+  return {
+    vps: Math.min((CORE_V + addV) * multV * p, 1e308),
+    lps: Math.min(addL * multL * p, 1e308),
+    prestige: p
+  };
 }
 
 /* ---------------- звук ---------------- */
@@ -574,11 +633,11 @@ function tone(freq, dur, type, vol, slideTo){
 })();
 
 /* ---------------- раскладка (псевдо-3D) ---------------- */
-const DW = 1600, DH = 1100;
+const DW = 1800, DH = 1100, MID = 840;
 const HORIZON = 150, NEAR_Y = 1010, CX = DW / 2;
 const rowY = t => NEAR_Y - 946 * Math.log(1 + 0.185 * t);
 const rowS = t => 1 / (1 + 0.185 * t);
-const nodePos = n => ({ x: CX + (n.gx - 600) * rowS(n.row), y: rowY(n.row), s: rowS(n.row) });
+const nodePos = n => ({ x: CX + (n.gx - MID) * rowS(n.row), y: rowY(n.row), s: rowS(n.row) });
 
 const world = $('#diorama'), linksSvg = $('#links'), nodesLayer = $('#nodes');
 const elById = {}, linkEls = {};
@@ -599,7 +658,7 @@ function roundPoly(pts, r){
   return d + ' L ' + last[0].toFixed(1) + ' ' + last[1].toFixed(1);
 }
 /* точка на земле на «глубине» t и координате gx (t — плавающий номер ряда) */
-function ground(gx, t){ return [CX + (gx - 600) * rowS(t), rowY(t)]; }
+function ground(gx, t){ return [CX + (gx - MID) * rowS(t), rowY(t)]; }
 function linkPath(a, b){
   const tA = a.row, tB = b.row;
   const mid = (tA + tB) / 2;
@@ -668,7 +727,7 @@ function buildTree(){
         el.appendChild(sh);
       }
     }
-    el.addEventListener('click', () => { if (!dragMoved) buy(n.id); });
+    el.addEventListener('click', () => { if (!dragMoved) buy(n.id, false, buyMax); });
     nodesLayer.appendChild(el);
     elById[n.id] = el;
   });
@@ -691,8 +750,13 @@ function updateNodes(){
     el.classList.toggle('can', !own && unl && (n.big ? true : balOf(n) >= price));
     const lvEl = el.querySelector('.lv');
     if (lvEl) lvEl.textContent = L + '/' + MX;
+    if (n.big){
+      const dEl = el.querySelector('.desc');
+      const dd = 'СЖЕЧЬ ДЕРЕВО<br>+' + bangReward() + ' ВЕЧНОСТИ';
+      if (dEl.dataset.t !== dd){ dEl.innerHTML = dd; dEl.dataset.t = dd; }
+    }
     el.querySelector('.foot').textContent = n.big
-      ? (own ? '∎' : 'ЗАЖЕЧЬ')
+      ? (own ? '∎' : (BYID.bb.unlocked() ? 'ЗАЖЕЧЬ' : 'ЗАКРЫТО'))
       : (!unl ? 'ЗАКРЫТО'
         : (own ? (MX > 1 ? 'МАКС' : 'КУПЛЕНО')
           : (n.cur === 'light' ? 'СВЕТ: ' : n.cur === 'ever' ? 'ВЕЧН: ' : 'ЦЕНА: ') + fmt(price)));
@@ -707,7 +771,7 @@ function updateNodes(){
   elb.classList.toggle('ready', unl);
   elb.classList.toggle('can', unl);
 }
-BYID.bb.unlocked = () => REAL.every(x => maxed(x));
+BYID.bb.unlocked = () => REAL.every(x => has(x.id));
 
 /* ---------------- HUD ---------------- */
 const elVoid = $('#voidVal'), elLight = $('#lightVal'), elEver = $('#everVal'),
@@ -730,16 +794,20 @@ function updateHUD(){
   elTotal.textContent = fmt(S.total);
   elOwned.textContent = REAL.filter(x => has(x.id)).length + '/' + REAL.length;
   elColl.textContent = '×' + fmt(stats.prestige);
+  const vm = $('#verMode');
+  const vmt = buyMax ? '· ВСЕ УРОВНИ' : '';
+  if (vm.textContent !== vmt) vm.textContent = vmt;
   const everOn = S.collapse > 0 || S.ever > 0;
   $('#pillLight').classList.toggle('off', !lightSeen && S.light <= 0);
   $('#pillEver').classList.toggle('on', everOn);
   $('#statEver').classList.toggle('on', everOn);
 
-  const next = NODES.find(n => !n.big && unlocked(n) && !maxed(n));
+  const next = NODES.find(n => !n.big && (everOn || !n.ever) && unlocked(n) && !maxed(n));
   if (next){
     const price = costOf(next);
     elGoalTitle.textContent = 'ЦЕЛЬ: ' + next.t + ' — ' + fmt(price) +
-      (next.cur === 'light' ? ' свет' : next.cur === 'ever' ? ' вечность' : '');
+      (next.cur === 'light' ? ' свет' : next.cur === 'ever' ? ' вечность' : '') +
+      (BYID.bb.unlocked() ? ' · BIG BANG ГОТОВ' : '');
     elGoalFill.style.width = Math.min(100, balOf(next) / price * 100).toFixed(1) + '%';
   } else {
     elGoalTitle.textContent = 'ВСЁ ОТКРЫТО — ЖМИ BIG BANG';
@@ -763,6 +831,41 @@ function ripple(x, y){
   d.style.left = x + 'px'; d.style.top = y + 'px';
   fxLayer.appendChild(d);
   setTimeout(() => d.remove(), 650);
+}
+/* четырёхлучевая вспышка, как в ролике */
+const SPARK_PATH = 'M12 0c.9 6.4 5.6 11.1 12 12-6.4.9-11.1 5.6-12 12-.9-6.4-5.6-11.1-12-12C6.4 11.1 11.1 6.4 12 0z';
+function spark(x, y, size, rot, cls){
+  const d = document.createElement('div');
+  d.className = 'spark' + (cls ? ' ' + cls : '');
+  d.style.left = x + 'px'; d.style.top = y + 'px';
+  d.style.width = size + 'px'; d.style.height = size + 'px';
+  d.style.margin = (-size/2) + 'px 0 0 ' + (-size/2) + 'px';
+  d.style.setProperty('--r', (rot || 0) + 'deg');
+  d.innerHTML = '<svg viewBox="0 0 24 24"><path d="' + SPARK_PATH + '" fill="#fff"/></svg>';
+  fxLayer.appendChild(d);
+  setTimeout(() => d.remove(), 1000);
+}
+function burst(x, y, n, cls){
+  spark(x, y, 150, 0, cls);
+  for (let i = 0; i < n; i++){
+    spark(x + (Math.random()*150 - 75), y + (Math.random()*100 - 50),
+      24 + Math.random()*38, Math.random()*90, cls);
+  }
+}
+function bangFx(){
+  const f = document.createElement('div');
+  f.className = 'flash';
+  fxLayer.appendChild(f);
+  setTimeout(() => f.remove(), 950);
+  stage.classList.add('shake');
+  setTimeout(() => stage.classList.remove('shake'), 640);
+  const fr = freeRect();
+  const cx = fr.l + fr.w/2, cy = fr.t + fr.h/2;
+  for (let i = 0; i < 16; i++){
+    spark(cx + (Math.random()*660 - 330), cy + (Math.random()*380 - 190),
+      40 + Math.random()*110, Math.random()*90);
+  }
+  ripple(cx, cy);
 }
 function toast(text, gold){
   const t = document.createElement('div');
@@ -796,17 +899,21 @@ function autoBuyTick(dt){
     autoAcc[cur] += dt;
     const period = 3.6 - 1.0 * (L - 1);
     if (autoAcc[cur] < period) continue;
-    autoAcc[cur] = 0;
-    const bal = cur === 'void' ? S.void : S.light;
-    const cands = NODES.filter(n => !n.big && !n.ever && (n.cur || 'void') === cur && unlocked(n) && !maxed(n) && costOf(n) <= bal);
-    if (!cands.length) continue;
-    cands.sort((a, b) => costOf(a) - costOf(b));
-    buy(cands[0].id, true);
+    let bought = 0;
+    for (let k = 0; k < L; k++){
+      const bal = cur === 'void' ? S.void : S.light;
+      const cands = NODES.filter(n => !n.big && !n.ever && (n.cur || 'void') === cur && unlocked(n) && !maxed(n) && costOf(n) <= bal);
+      if (!cands.length) break;
+      cands.sort((a, b) => costOf(a) - costOf(b));
+      buy(cands[0].id, true);
+      bought++;
+    }
+    if (bought) autoAcc[cur] = 0;
   }
 }
 
 /* ---------------- покупки ---------------- */
-function buy(id, silent){
+function buy(id, silent, multi){
   const n = BYID[id];
   if (!n) return;
   if (n.big){
@@ -816,8 +923,21 @@ function buy(id, silent){
   }
   if (!unlocked(n) || maxed(n)) return;
   const cur = n.cur || 'void';
-  const price = costOf(n);
-  if (S[cur] < price){
+
+  /* сколько уровней берём: 1 или максимум, на который хватает валюты */
+  let take = 1, spent = 0;
+  if (multi){
+    take = 0;
+    let bal = S[cur];
+    while (take < 400 && lvOf(id) + take < maxLv(n)){
+      const c = costAt(n, lvOf(id) + take);
+      if (c > bal) break;
+      bal -= c; spent += c; take++;
+    }
+  } else {
+    spent = costAt(n, lvOf(id));
+  }
+  if (!take || S[cur] < spent){
     if (!silent){
       elById[id].classList.add('shake');
       setTimeout(() => elById[id].classList.remove('shake'), 320);
@@ -825,9 +945,10 @@ function buy(id, silent){
     }
     return;
   }
-  const before = NODES.filter(x => unlocked(x) && !maxed(x)).map(x => x.id);
-  S[cur] -= price;
-  S.lv[id] = lvOf(id) + 1;
+  const isOpen = x => x.big ? BYID.bb.unlocked() : unlocked(x);
+  const before = NODES.filter(x => isOpen(x) && !maxed(x)).map(x => x.id);
+  S[cur] -= spent;
+  S.lv[id] = lvOf(id) + take;
   stats = calc();
 
   const el = elById[id];
@@ -838,8 +959,11 @@ function buy(id, silent){
     else if (n.gold){ tone(740, .09, 'triangle', .05); setTimeout(() => tone(1100, .18, 'triangle', .045), 70); }
     else { tone(620, .09, 'triangle', .05); setTimeout(() => tone(930, .16, 'triangle', .045), 70); }
     const r = el.querySelector('.panel').getBoundingClientRect();
-    ripple(r.left + r.width/2, r.top + r.height/2);
-    const newly = NODES.filter(x => unlocked(x) && before.indexOf(x.id) < 0);
+    const cx = r.left + r.width/2, cy = r.top + r.height/2;
+    ripple(cx, cy);
+    burst(cx, cy, 3, n.ever ? 'ever' : (n.gold ? 'gold' : ''));
+    if (take > 1) floatText(cx, cy - 40, '+' + take + ' УР.', n.ever ? 'ever' : (n.gold ? 'gold' : ''));
+    const newly = NODES.filter(x => isOpen(x) && before.indexOf(x.id) < 0);
     for (const x of newly) toast('ОТКРЫТ УЗЕЛ: ' + x.t, x.gold || x.ever);
     if (id === 'L1' && !lightSeen){ lightSeen = true; toast('СВЕТ ОТКРЫТ — ВАЛЮТА LIGHT ✦', true); }
   }
@@ -847,9 +971,14 @@ function buy(id, silent){
   updateNodes(); updateHUD(); save();
 }
 
+function bangReward(){
+  let lv = 0;
+  for (const n of REAL) lv += lvOf(n.id);
+  return 1 + Math.floor(lv / 40);
+}
 function doCollapse(){
   if (!BYID.bb.unlocked()) return;
-  const earn = 1 + Math.floor(S.collapse / 2);
+  const earn = bangReward();
   S.ever += earn;
   S.collapse++;
   for (const k in S.lv) if (!BYID[k] || !BYID[k].ever) delete S.lv[k];
@@ -857,6 +986,8 @@ function doCollapse(){
   stats = calc();
   tone(220, .6, 'sine', .07, 1200);
   setTimeout(() => tone(1200, .5, 'sine', .05, 200), 220);
+  autoAcc.void = 0; autoAcc.light = 0;
+  bangFx();
   toast('BIG BANG ×' + fmt(stats.prestige) + ' — +' + earn + ' ВЕЧНОСТИ', true);
   updateNodes(); updateHUD(); save();
 }
@@ -873,10 +1004,10 @@ function applyCam(){
 }
 function fitView(){
   const f = freeRect();
-  const s = Math.max(.34, Math.min(1.2, Math.min(f.w / 1560, f.h / 1030) * 1.02));
+  const s = Math.max(.34, Math.min(1.2, Math.min(f.w / 1400, f.h / 1095) * 1.02));
   cam.s = s;
   cam.x = f.l + f.w/2 - DW/2 * s;
-  cam.y = f.t + f.h/2 - 518 * s - 18 * s;
+  cam.y = f.t + f.h/2 - 480 * s - 14 * s;
   applyCam();
 }
 function centerOnNode(id, scale){
@@ -934,7 +1065,9 @@ stage.addEventListener('dblclick', e => {
   fitView();
 });
 $('#btnFocus').addEventListener('click', () => {
-  const next = NODES.find(n => !has(n.id) && !n.big && unlocked(n)) || NODES.find(n => !has(n.id) && !n.big);
+  const everOn = S.collapse > 0 || S.ever > 0;
+  const pool = NODES.filter(n => !n.big && !maxed(n) && unlocked(n) && (everOn || !n.ever));
+  const next = pool[0] || NODES.filter(n => !n.big && (everOn || !n.ever))[0];
   if (next) centerOnNode(next.id);
 });
 
@@ -987,10 +1120,19 @@ $('#btnMenu').addEventListener('click', () => {
     '<div class="row"><span>Вечность</span><b>' + fmt(S.ever) + '</b></div>' +
     '<div class="row"><span>Узлов</span><b>' + REAL.filter(x => has(x.id)).length + '/' + REAL.length + '</b></div>' +
     '<div class="row"><span>В игре</span><b>' + played + '</b></div>' +
+    '<div class="row"><span>Версия</span><b>v' + VERSION + ' <span style="opacity:.55">(' + BUILD + ')</span></b></div>' +
+    '<button class="btn" id="mBuyMax">ПОКУПКА ВСЕХ УРОВНЕЙ: ' + (buyMax ? 'ВКЛ' : 'ВЫКЛ') + '</button>' +
     '<button class="btn" id="mSave">СОХРАНИТЬ СЕЙВ</button>' +
     '<button class="btn danger" id="mReset">СБРОСИТЬ ПРОГРЕСС</button>');
 });
 document.addEventListener('click', e => {
+  if (e.target.id === 'mBuyMax'){
+    buyMax = !buyMax;
+    e.target.textContent = 'ПОКУПКА ВСЕХ УРОВНЕЙ: ' + (buyMax ? 'ВКЛ' : 'ВЫКЛ');
+    tone(buyMax ? 880 : 440, .1, 'square', .035);
+    toast(buyMax ? 'РЕЖИМ: ВСЕ УРОВНИ' : 'РЕЖИМ: ПО 1 УРОВНЮ', true);
+    updateHUD(); save();
+  }
   if (e.target.id === 'mSave'){ save(); toast('СЕЙВ СОХРАНЁН'); }
   if (e.target.id === 'mReset'){
     if (confirm('Сбросить весь прогресс?')){ localStorage.removeItem(SAVE_KEY); location.reload(); }
@@ -1010,25 +1152,27 @@ function save(){
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify({
       v: 4, void: S.void, light: S.light, ever: S.ever, total: S.total, lv: S.lv,
-      collapse: S.collapse, ts: Date.now(), born: S.born, lightSeen: lightSeen, autoReset: autoReset
+      collapse: S.collapse, ts: Date.now(), born: S.born, lightSeen: lightSeen, autoReset: autoReset, muted: muted, buyMax: buyMax
     }));
   } catch(e){}
 }
 function load(){
   try {
-    const d = JSON.parse(localStorage.getItem(SAVE_KEY));
+    const d = JSON.parse(localStorage.getItem(SAVE_KEY) || localStorage.getItem(SAVE_KEY_OLD));
     if (!d) return;
-    S.void = +d.void || 0;
-    S.light = +d.light || 0;
-    S.ever = +d.ever || 0;
+    S.void = Math.max(0, +d.void || 0);
+    S.light = Math.max(0, +d.light || 0);
+    S.ever = Math.max(0, +d.ever || 0);
     S.total = +d.total || 0;
     S.collapse = +d.collapse || 0;
     S.born = +d.born || Date.now();
     lightSeen = !!d.lightSeen;
     autoReset = !!d.autoReset;
+    muted = !!d.muted;
+    buyMax = !!d.buyMax;
     S.lv = {};
     if (d.lv && typeof d.lv === 'object'){
-      for (const k in d.lv) if (BYID[k]) S.lv[k] = Math.max(0, Math.min(maxLv(BYID[k]), +d.lv[k] || 0));
+      for (const k in d.lv) if (BYID[k]) S.lv[k] = Math.max(0, Math.min(maxLv(BYID[k]), Math.floor(+d.lv[k] || 0)));
     } else if (Array.isArray(d.owned)){            /* миграция со v3 */
       d.owned.filter(id => BYID[id]).forEach(id => { S.lv[id] = 1; });
     }
@@ -1047,8 +1191,15 @@ function load(){
 /* ---------------- цикл ---------------- */
 let lastT = performance.now(), nextRefresh = 0, autoTimer = 0;
 function frame(now){
-  const dt = Math.min(.1, (now - lastT) / 1000);
+  const raw = (now - lastT) / 1000;
   lastT = now;
+  const dt = Math.min(.1, raw);
+  if (raw > 60){                       /* вкладка была в фоне — начисляем как оффлайн */
+    const away = Math.min(12 * 3600, raw);
+    const gv = stats.vps * away, gl = stats.lps * away;
+    S.void += gv; S.total += gv; S.light += gl;
+    toast('ЗА ФОНОМ: +' + fmt(gv) + ' void (' + fmtTime(away) + ')');
+  }
 
   S.void += stats.vps * dt;
   S.total += stats.vps * dt;
@@ -1065,14 +1216,11 @@ function frame(now){
     el.classList.add('pop');
     setTimeout(() => el.classList.remove('pop'), 120);
   }
+  if (autoReset && BYID.bb.unlocked()) autoTimer += dt; else autoTimer = 0;
   if (now >= nextRefresh){
     nextRefresh = now + 260; updateNodes();
-    const ready = BYID.bb.unlocked();
-    elBang.classList.toggle('on', ready);
-    if (autoReset && ready){
-      autoTimer += dt;
-      if (autoTimer > 2.5){ autoTimer = 0; doCollapse(); }
-    } else autoTimer = 0;
+    elBang.classList.toggle('on', BYID.bb.unlocked());
+    if (autoReset && autoTimer > 2.5){ autoTimer = 0; doCollapse(); }
   }
   saveAcc += dt;
   if (saveAcc > 5){ saveAcc = 0; save(); }
